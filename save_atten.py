@@ -35,7 +35,7 @@ class SAVE_ATTEN(object):
             atten = atten_batch[idx]
             atten = atten.cpu().data.numpy()
             label = label_batch[idx]
-            label_list = self.get_label(label)                                             # label_list有可能是多个label，所以可能对应多个map
+            label_list = self.get_label(label)                                     # label_list maybe contain several labels，so it could be several maps
             self._save_masked_img(path_batch[idx], atten, label_list)
 
 
