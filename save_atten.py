@@ -71,10 +71,14 @@ class SAVE_ATTEN(object):
 
 
     def normalize_map(self, atten_map):
-        min_val = np.min(atten_map)
-        max_val = np.max(atten_map)
-        atten_norm = (atten_map - min_val)/(max_val - min_val)
-        return atten_norm
+        atten_map = torch.from_numpy(atten_map)
+        # Because there is a large negative number in it, the negative number is filtered out.
+        atten_map = torch.mul(atten_map, (atten_map > 0).float())
+        min_val = torch.min(atten_map)
+        max_val = torch.max(atten_map)
+        atten_map = (atten_map - min_val) / (max_val - min_val)
+        atten_map = atten_map.detach().cpu().numpy()
+        return atten_mapm
 
 
     def get_label(self, gt_label):
